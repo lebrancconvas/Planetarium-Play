@@ -2,9 +2,12 @@ package main
 
 import (
 	_ "image/png"
+	"bytes"
 	"log"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/audio"
+	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
 )
 
 var (
@@ -12,6 +15,8 @@ var (
 	bg *ebiten.Image 
 	logo *ebiten.Image 
 	startButton *ebiten.Image 
+	audioContext *audio.Context 
+	// sound *audio.Player
 )
 
 func init() {
@@ -29,13 +34,31 @@ func init() {
 	if err != nil {
 		log.Fatal(err); 
 	}
+
+	sound, err := readAudio(audioContext, "../assets/audio/bgm/star_wars.mp3");
+	if err != nil {
+		log.Fatal(err); 
+	}
 }
 
 type Game struct{
+	
+}
 
+func readAudio(context *audio.Context, asset []byte) (*audio.Player, error) {
+	mp3Decoded, err := mp3.Decode(context, bytes.NewReader(asset))
+	if err != nil {
+		return nil, err
+	}
+	player, err := audio.NewPlayer(context, mp3Decoded)
+	if err != nil {
+		return nil, err
+	}
+	return player, nil
 }
 
 func (g *Game) Update() error {
+	// audioContext.NewPlayer();
 	return nil;
 }
 
