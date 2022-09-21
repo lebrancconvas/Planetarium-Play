@@ -11,15 +11,21 @@ var (
 	err error
 	bg *ebiten.Image 
 	logo *ebiten.Image 
+	startButton *ebiten.Image 
 )
 
 func init() {
 	bg, _, err = ebitenutil.NewImageFromFile("../assets/img/space_bg07.png");
-	if err != nil {
+	if err != nil {                                       
 		log.Fatal(err); 
 	}
 
 	logo, _, err = ebitenutil.NewImageFromFile("../assets/img/logo.png");
+	if err != nil {
+		log.Fatal(err); 
+	}
+
+	startButton, _, err = ebitenutil.NewImageFromFile("../assets/img/1.png");
 	if err != nil {
 		log.Fatal(err); 
 	}
@@ -34,8 +40,17 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	logoOp := &ebiten.DrawImageOptions{};
+	logoOp.GeoM.Scale(0.75, 0.75);
+	logoOp.GeoM.Translate(140, -30);
+
+	startOp := &ebiten.DrawImageOptions{};
+	startOp.GeoM.Scale(0.75, 0.75);
+	startOp.GeoM.Translate(140, 100);
+
 	screen.DrawImage(bg, nil);
-	screen.DrawImage(logo, nil);
+	screen.DrawImage(logo, logoOp); 
+	screen.DrawImage(startButton, startOp); 
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
